@@ -29,6 +29,16 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
         // Copy the result from logcat and assign to expectedSigningCertificateHashBase64
          Log.e("SigningCertificateHash", Utils.computeSigningCertificateHash(this))
 
+        FridaDetector.startMonitoring(this) { reason ->
+            Log.e(TAG, "Frida detected: $reason")
+
+            android.os.Handler(mainLooper).post {
+                currentActivity?.finishAffinity()
+                android.os.Process.killProcess(android.os.Process.myPid())
+                kotlin.system.exitProcess(0)
+            }
+        }
+
         val config = TalsecConfig.Builder(
             expectedPackageName,
             expectedSigningCertificateHashBase64)
@@ -188,13 +198,17 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
                 Log.d(TAG, "onSystemVPNDetected → setSystemVpn(true)")
             }
     }
-
+    override fun onTerminate() {
+        super.onTerminate()
+        FridaDetector.stopMonitoring()
+    }
     companion object {
         private const val expectedPackageName = "com.aheaditec.talsec.demoapp" // Don't use Context.getPackageName!
         val expectedSigningCertificateHashBase64 = arrayOf(
             "mVr/qQLO8DKTwqlL+B1qigl9NoBnbiUs8b4c2Ewcz0k=",
             "cVr/qQLO8DKTwqlL+B1qigl9NoBnbiUs8b4c2Ewcz0m=",
-            "R5nxbQKTORHylpuWiuSeDnI2UnRAROqgri41xaNNyqU="
+            "R5nxbQKTORHylpuWiuSeDnI2UnRAROqgri41xaNNyqU=",
+            "ysAbnW7/bbtjvkEBdebcNtJn7yLn1yPgwD/zkejWOXo="
         ) // Replace with your release (!) signing certificate hashes
         private const val watcherMail = "john@example.com" // for Alerts and Reports
         private val supportedAlternativeStores = arrayOf(
