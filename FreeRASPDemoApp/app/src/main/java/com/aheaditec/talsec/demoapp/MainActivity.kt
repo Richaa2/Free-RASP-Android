@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var chipDeveloperMode: Chip
     private lateinit var chipAdbEnabled: Chip
     private lateinit var chipSystemVpn: Chip
+    private lateinit var signingCertificateHash: TextView
 
     private lateinit var tvLog: TextView
     private lateinit var malwareContainer: LinearLayout
@@ -57,7 +58,7 @@ class MainActivity : AppCompatActivity() {
         chipSystemVpn = findViewById(R.id.chipSystemVpn)
         tvLog = findViewById(R.id.tvLog)
         malwareContainer = findViewById(R.id.malwareContainer)
-
+        signingCertificateHash = findViewById(R.id.tvSigningCertificateHash)
 
 
         listOf(
@@ -72,6 +73,8 @@ class MainActivity : AppCompatActivity() {
                 renderFlags(f)
             }
         }
+
+        signingCertificateHash.append("\n\n${Utils.computeSigningCertificateHash(this)} \n\n Expected:\n ${TalsecApplication.expectedSigningCertificateHashBase64.joinToString(",\n\n")}")
 
         log("Security dashboard ready")
     }

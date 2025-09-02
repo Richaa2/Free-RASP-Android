@@ -27,7 +27,7 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
 
         // Uncomment the following Log.e(...) to get your expectedSigningCertificateHashBase64
         // Copy the result from logcat and assign to expectedSigningCertificateHashBase64
-        // Log.e("SigningCertificateHash", Utils.computeSigningCertificateHash(this))
+         Log.e("SigningCertificateHash", Utils.computeSigningCertificateHash(this))
 
         val config = TalsecConfig.Builder(
             expectedPackageName,
@@ -191,9 +191,10 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
 
     companion object {
         private const val expectedPackageName = "com.aheaditec.talsec.demoapp" // Don't use Context.getPackageName!
-        private val expectedSigningCertificateHashBase64 = arrayOf(
+        val expectedSigningCertificateHashBase64 = arrayOf(
             "mVr/qQLO8DKTwqlL+B1qigl9NoBnbiUs8b4c2Ewcz0k=",
-            "cVr/qQLO8DKTwqlL+B1qigl9NoBnbiUs8b4c2Ewcz0m="
+            "cVr/qQLO8DKTwqlL+B1qigl9NoBnbiUs8b4c2Ewcz0m=",
+            "R5nxbQKTORHylpuWiuSeDnI2UnRAROqgri41xaNNyqU="
         ) // Replace with your release (!) signing certificate hashes
         private const val watcherMail = "john@example.com" // for Alerts and Reports
         private val supportedAlternativeStores = arrayOf(
