@@ -98,91 +98,95 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
             }
         }
     }
+    override fun onRootDetected() =
+        SecurityState.setRoot(true).also {
+            Log.d(TAG, "onRootDetected → setRoot(true)")
+        }
 
-    override fun onRootDetected() {
-        // Set your reaction
-        println("onRootDetected")
-    }
+    override fun onEmulatorDetected() =
+        SecurityState.setEmulator(true).also {
+            Log.d(TAG, "onEmulatorDetected → setEmulator(true)")
+        }
 
-    override fun onDebuggerDetected() {
-        // Set your reaction
-        // Triggered only in release build
-        println("onDebuggerDetected")
-    }
+    override fun onDebuggerDetected() =
+        SecurityState.setDebugger(true).also {
+            Log.d(TAG, "onDebuggerDetected → setDebugger(true)")
+        }
 
-    override fun onEmulatorDetected() {
-        // Set your reaction
-        // Triggered only in release build
-        println("onEmulatorDetected")
-    }
+    override fun onTamperDetected() =
+        SecurityState.setTamper(true).also {
+            Log.d(TAG, "onTamperDetected → setTamper(true)")
+        }
 
-    override fun onTamperDetected() {
-        // Set your reaction
-        // Triggered only in release build
-        println("onTamperDetected")
-    }
+    override fun onUntrustedInstallationSourceDetected() =
+        SecurityState.setUntrustedSource(true).also {
+            Log.d(TAG, "onUntrustedInstallationSourceDetected → setUntrustedSource(true)")
+        }
 
-    override fun onUntrustedInstallationSourceDetected() {
-        // Set your reaction
-        // Triggered only in release build
-        println("onUntrustedInstallationSourceDetected")
-    }
+    override fun onHookDetected() =
+        SecurityState.setHook(true).also {
+            Log.d(TAG, "onHookDetected → setHook(true)")
+        }
 
-    override fun onHookDetected() {
-        // Set your reaction
-        println("onHookDetected")
-    }
+    override fun onDeviceBindingDetected() =
+        SecurityState.setDeviceBinding(true).also {
+            Log.d(TAG, "onDeviceBindingDetected → setDeviceBinding(true)")
+        }
 
-    override fun onDeviceBindingDetected() {
-        // Set your reaction
-        println("onDeviceBindingDetected")
-    }
+    override fun onObfuscationIssuesDetected() =
+        SecurityState.setObfuscationIssues(true).also {
+            Log.d(TAG, "onObfuscationIssuesDetected → setObfuscationIssues(true)")
+        }
 
-    override fun onObfuscationIssuesDetected() {
-        // Set your reaction
-        println("onObfuscationIssuesDetected")
-    }
+    override fun onScreenshotDetected() =
+        SecurityState.setScreenshot(true).also {
+            Log.d(TAG, "onScreenshotDetected → setScreenshot(true)")
+        }
 
-    override fun onMalwareDetected(p0: MutableList<SuspiciousAppInfo>?) {
-        // Set your reaction
-        println("onMalwareDetected")
-    }
+    override fun onScreenRecordingDetected() =
+        SecurityState.setScreenRecording(true).also {
+            Log.d(TAG, "onScreenRecordingDetected → setScreenRecording(true)")
+        }
 
-    override fun onScreenshotDetected() {
-        println("onScreenshotDetected")
-    }
+    override fun onMultiInstanceDetected() =
+        SecurityState.setMultiInstance(true).also {
+            Log.d(TAG, "onMultiInstanceDetected → setMultiInstance(true)")
+        }
 
-    override fun onScreenRecordingDetected() {
-        println("onScreenRecordingDetected")
-    }
+    override fun onMalwareDetected(list: List<SuspiciousAppInfo?>?) =
+        SecurityState.setMalware(list?.filterNotNull()?.isNotEmpty() == true).also {
+            Log.d(TAG, "onMalwareDetected → ${list?.size ?: 0} suspicious apps")
+        }
 
-    override fun onMultiInstanceDetected() {
-        println("onMultiInstanceDetected")
-    }
+
+
 
     // This is optional. Use only if you are interested in device state information like device lock and HW backed keystore state
     private val deviceStateListener = object : ThreatListener.DeviceState {
-        override fun onUnlockedDeviceDetected() {
-            // Set your reaction
-            println("onUnlockedDeviceDetected")
-        }
+        override fun onUnlockedDeviceDetected() =
+            SecurityState.setUnlockedDevice(true).also {
+                Log.d(TAG, "onUnlockedDeviceDetected → setUnlockedDevice(true)")
+            }
 
-        override fun onHardwareBackedKeystoreNotAvailableDetected() {
-            // Set your reaction
-            println("onHardwareBackedKeystoreNotAvailableDetected")
-        }
+        override fun onHardwareBackedKeystoreNotAvailableDetected() =
+            SecurityState.setHwKeystoreMissing(true).also {
+                Log.d(TAG, "onHardwareBackedKeystoreNotAvailableDetected → setHwKeystoreMissing(true)")
+            }
 
-        override fun onDeveloperModeDetected() {
-            println("onDeveloperModeDetected")
-        }
+        override fun onDeveloperModeDetected() =
+            SecurityState.setDeveloperMode(true).also {
+                Log.d(TAG, "onDeveloperModeDetected → setDeveloperMode(true)")
+            }
 
-        override fun onADBEnabledDetected() {
-            println("onADBEnabledDetected")
-        }
+        override fun onADBEnabledDetected() =
+            SecurityState.setAdbEnabled(true).also {
+                Log.d(TAG, "onADBEnabledDetected → setAdbEnabled(true)")
+            }
 
-        override fun onSystemVPNDetected() {
-            println("onSystemVPNDetected")
-        }
+        override fun onSystemVPNDetected() =
+            SecurityState.setSystemVpn(true).also {
+                Log.d(TAG, "onSystemVPNDetected → setSystemVpn(true)")
+            }
     }
 
     companion object {
@@ -197,5 +201,9 @@ class TalsecApplication : Application(), ThreatListener.ThreatDetected {
             "com.sec.android.app.samsungapps" // Samsung Store
         )
         private val isProd = true
+        private const val TAG = "TalsecEvents"
+
+
+
     }
 }
